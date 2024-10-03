@@ -37,6 +37,13 @@ sap.ui.define([
 
             if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
                 oView.getModel("view").setProperty("/selectedTabKey", oQuery.tab);
+
+                // Support Lazy Loading for the hobbies and the notes tab
+                if (oQuery.tab == "Hobbies" || oQuery.tab == "Notes") {
+                    // Target either "resumeTabHobbies" or "resumeTabNotes"
+                    this.getRouter().getTargets().display("resumeTab" + oQuery.tab);
+                }
+
             } else {
                 // The default query param should be visible at all time
                     this.getRouter().navTo("employeeResume", {
