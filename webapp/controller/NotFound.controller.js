@@ -12,7 +12,7 @@ sap.ui.define([
             oTarget = oRouter.getTarget("notFound");
             oTarget.attachDisplay(function (oEvent) {
                 this._oData = oEvent.getParameter("data"); // store the data
-            })
+            }, this)
 
         },
 
