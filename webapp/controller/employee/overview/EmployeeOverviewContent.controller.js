@@ -18,6 +18,8 @@ sap.ui.define([
 	return BaseController.extend("sap.ui.demo.nav.controller.employee.overview.EmployeeOverviewContent", {
 
 		onInit: function () {
+            let oRouter = this.getRouter();
+
 			this._oTable = this.byId("employeesTable");
 			this._oVSD = null;
 			this._sSortField = null;
@@ -26,13 +28,30 @@ sap.ui.define([
 			this._sSearchQuery = null;
 
 			this._initViewSettingsDialog();
+
+            // Make the search bookmarkable
+            oRouter.getRoute("employeeOverview").attachMatched(this._onRouteMatched, this);
+            
 		},
+
+        _onRouteMatched: function (oEvent) {
+            // Save the current query state
+            this._oRouterArgs = oEvent.getParameter("arguments");
+            this._oRouterArgs["?query"] = this._oRouterArgs["?query"] || {};
+
+            // Search / Filter via URL hash
+            this._applySearchFilter(this._oRouterArgs["?query"].search);
+        },
 
 		onSortButtonPressed : function () {
 			this._oVSD.open();
 		},
 
 		onSearchEmployeesTable : function (oEvent) {
+            let oRouter = this.getRouter();
+            // Update the hash with the current search term
+            this._oRouterArgs["?query"].search = oEvent.getSource().getValue();
+            oRouter.navTo("employeeOverview", this._oRouterArgs, true /*no history */);
 			this._applySearchFilter( oEvent.getSource().getValue() );
 		},
 
