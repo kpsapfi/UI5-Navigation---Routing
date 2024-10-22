@@ -19,6 +19,13 @@ sap.ui.define([
 				// Action would go here, like logging data to backend for analysis
 				Log.info("Sorry, but the has '" + sHash + "' is invalid.", "The resource was not found.");
 			});
+
+			oRouter.attachRouteMatched(function (oEvent) {
+				let sRouteName = oEvent.getParameter("name");
+
+				// Action here, like logging stats to back end to help improve app
+				Log.info("user accessed route " + sRouteName + ", timestamp = " + Date.now());
+			});
 		}
 	});
 });
